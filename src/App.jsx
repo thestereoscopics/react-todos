@@ -3,14 +3,18 @@ import SearchInput from './components/SearchInput.jsx'
 import ListItems from './components/ListItems.jsx'
 
 export default function App() {
-  const [todoList, setTodoList] = useState([{completed: +false, listitemid: Date.now(), itemName: 'Go Golfing'}]);
+  const [todoList, setTodoList] = useState([]);
 
   function searchTodoList(value) {
-    console.log(value);
+    todoList.map((todo, i) => {
+      if (todo.listitemid === todoID) {
+        todoPos = i;
+      }
+    })
   }
 
-  function triggerAddTodo() {
-    let newTodoItem = [...todoList, {completed: +false, listitemid: Date.now(), itemName: 'Go Golfing'}];
+  function triggerAddTodo(todoName) {
+    let newTodoItem = [...todoList, {completed: +false, listitemid: Date.now(), todoName: todoName}];
     setTodoList(newTodoItem)
   }
 
