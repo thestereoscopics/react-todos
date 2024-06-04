@@ -1,27 +1,20 @@
 import { useState, useEffect } from "react"
 import AddTodo from "./AddTodo";
 import DeleteTodo from "./DeleteTodo";
+import Checkbox from "./Checkbox";
 
-export default function ListItems({todoList, triggerAddTodo, triggerDeleteTodo}) {
+export default function ListItems({todoList, triggerAddTodo, triggerDeleteTodo, updateTodo}) {
   const [todoListHTML, setTodoListHTML] = useState([]);
-  const [checkboxValue, setCheckboxValue] = useState(false);
-
-  function handleChange() {
-    const checkVal = (checkboxValue === 'checked') ? false : 'checked'
-    console.log('change', checkVal);
-    setCheckboxValue(checkVal)
-  }
 
   function populateTodoList() {
     let tempTodoListHTML = [];
     todoList.map(listItem => {
       tempTodoListHTML.push(
-        <li className="grid items-center grid-rows-1 grid-flow-col gap-4" key={listItem.listitemid} status={listItem.completed} listitemid={listItem.listitemid}>
-          <span className="w-auto left flex gap-4">
-            <input className="w-auto max-w-2 cursor-pointer" type="checkbox" onChange={() => handleChange(this)} checked={false} name={listItem.listitemid} id={listItem.listitemid} />
-            <label className="w-auto cursor-pointer" htmlFor={listItem.listitemid}>{listItem.todoName}</label>
+        <li className={"flex items-center max-w-full gap-4 " + (listItem.insearch === 1 ? 'insearch' : '')} key={listItem.listitemid} status={(listItem.completed === 1) ? 'complete' : 'unfinished'} listitemid={listItem.listitemid}>
+          <span className={"w-auto flex-auto left flex gap-4 " + (listItem.completed === 1 ? 'line-through' : 'unfinished') } >
+            <Checkbox listitemid={listItem.listitemid} todoName={listItem.todoName} updateTodo={updateTodo}/>
           </span>
-          <span className="grid w-auto">
+          <span className="grid justify-end">
             <DeleteTodo todoID={listItem.listitemid} triggerDeleteTodo={triggerDeleteTodo}/>
           </span>
         </li>
@@ -36,7 +29,7 @@ export default function ListItems({todoList, triggerAddTodo, triggerDeleteTodo})
 
   return (
     <>
-      <ul>
+      <ul className="mb-4">
         {todoListHTML}
       </ul>
       <AddTodo triggerAddTodo={triggerAddTodo}/>
