@@ -2,20 +2,22 @@ import { useState, useEffect } from "react"
 import AddTodo from "./AddTodo";
 import DeleteTodo from "./DeleteTodo";
 import Checkbox from "./Checkbox";
+import EditTodo from "./EditTodo";
 
-export default function ListItems({todoList, triggerAddTodo, triggerDeleteTodo, updateTodo}) {
+export default function ListItems({todoList, addTodo, deleteTodo, todoCompleteState, todoEditState, updateTodoName}) {
   const [todoListHTML, setTodoListHTML] = useState([]);
 
   function populateTodoList() {
     let tempTodoListHTML = [];
     todoList.map(listItem => {
       tempTodoListHTML.push(
-        <li className={"flex items-center max-w-full gap-4 " + (listItem.insearch === 1 ? 'insearch' : '')} key={listItem.listitemid} status={(listItem.completed === 1) ? 'complete' : 'unfinished'} listitemid={listItem.listitemid}>
-          <span className={"w-auto flex-auto left flex gap-4 " + (listItem.completed === 1 ? 'line-through' : 'unfinished') } >
-            <Checkbox listitemid={listItem.listitemid} todoName={listItem.todoName} updateTodo={updateTodo}/>
+        <li className={"flex items-center max-w-full gap-4 " + (listItem.insearch === 1 ? 'insearch' : '')} key={listItem.todoid} status={(listItem.completed === 1) ? 'complete' : 'unfinished'} todoid={listItem.todoid}>
+          <span className={"w-auto flex-auto items-center left flex gap-4 " + (listItem.completed === 1 ? 'line-through' : 'unfinished') } >
+            <Checkbox todoID={listItem.todoid} isEditing={listItem.isEditing} todoName={listItem.todoName} status={listItem.completed} todoCompleteState={todoCompleteState} updateTodoName={updateTodoName} todoEditState={todoEditState} />
           </span>
-          <span className="grid justify-end">
-            <DeleteTodo todoID={listItem.listitemid} triggerDeleteTodo={triggerDeleteTodo}/>
+          <span className="flex flex-auto gap-4 justify-end">
+            <EditTodo todoID={listItem.todoid} todoEditState={todoEditState}/>
+            <DeleteTodo todoID={listItem.todoid} deleteTodo={deleteTodo}/>
           </span>
         </li>
       )
@@ -32,7 +34,7 @@ export default function ListItems({todoList, triggerAddTodo, triggerDeleteTodo, 
       <ul className="mb-4">
         {todoListHTML}
       </ul>
-      <AddTodo triggerAddTodo={triggerAddTodo}/>
+      <AddTodo addTodo={addTodo}/>
     </>
   )
 }

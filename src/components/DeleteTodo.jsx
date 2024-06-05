@@ -1,5 +1,5 @@
-export default function DeleteTodo({triggerDeleteTodo, todoID}) {
+export default function DeleteTodo({deleteTodo, todoID}) {
     return (
-        <button className="delete w-auto" onClick={() => triggerDeleteTodo(todoID)}>Delete</button>
+        <button className="delete w-auto" onClick={() => deleteTodo(todoID)}>Delete</button>
     )
 }

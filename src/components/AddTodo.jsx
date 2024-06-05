@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function AddTodo({triggerAddTodo}) {
+export default function AddTodo({addTodo}) {
     const [todoValue, setTodoValue] = useState('');
 
     function handleChange(e) {
@@ -9,7 +9,7 @@ export default function AddTodo({triggerAddTodo}) {
 
     function handleClick() {
         if (todoValue) {
-            triggerAddTodo(todoValue);
+            addTodo(todoValue);
             setTodoValue('')
         }
     }

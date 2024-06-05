@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-export default function SearchInput({searchTodoList}) {
+export default function SearchInput({ searchTodoList }) {
     const [searchValue, setSearchValue] = useState('')
 
     function handleClick(e) {
@@ -9,14 +9,15 @@ export default function SearchInput({searchTodoList}) {
     }
 
     return (
-        <input 
+        <input
             type="text"
-            name="search" 
+            name="search"
             className="mb-4"
             value={searchValue}
-            onChange={e => setSearchValue(e.target.value)} 
+            onChange={e => setSearchValue(e.target.value)}
             onKeyUp={handleClick}
             id="search"
+            placeholder="Search Todos"
         />
     )
-  }
+}

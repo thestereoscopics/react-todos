@@ -1,9 +1,15 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import SearchInput from './components/SearchInput.jsx'
 import ListItems from './components/ListItems.jsx'
+import TypeSort from './components/TypeSort.jsx'
+import TypeSortKey from './components/TypeSortKey.jsx'
 
 export default function App() {
-  const [todoList, setTodoList] = useState([]);
+  const [todoList, setTodoList] = useState(JSON.parse(localStorage.getItem('localTodos')) || []);
+
+  function updateAllTodos(newTodoList) {
+    setTodoList(newTodoList)
+  }
 
   function searchTodoList(value) {
     let searchGroup = [];
@@ -16,46 +22,83 @@ export default function App() {
         newTodoList[i].insearch = +false
       }
     })
-    setTodoList(newTodoList);
+    updateAllTodos(newTodoList);
   }
 
-  function updateTodo(todoID, isComplete){
+  function todoCompleteState(todoID, isComplete){
     let todoPos = '';
     todoList.map((todo, i) => {
-      if (todo.listitemid === todoID) {
+      if (todo.todoid === todoID) {
         todoPos = i;
       }
     })
 
     let newTodoList = [...todoList];
-    console.log(newTodoList[todoPos].completed, +isComplete);
     newTodoList[todoPos].completed = +isComplete
-    setTodoList(newTodoList);
+    updateAllTodos(newTodoList);
   }
 
-  function triggerAddTodo(todoName) {
-    let newTodoItem = [...todoList, {insearch: +false, completed: +false, listitemid: Date.now(), todoName: todoName}];
-    setTodoList(newTodoItem)
-  }
-
-  function triggerDeleteTodo(todoID) {
+  function todoEditState(todoID, isEditing){
     let todoPos = '';
     todoList.map((todo, i) => {
-      if (todo.listitemid === todoID) {
+      if (todo.todoid === todoID) {
+        todoPos = i;
+      }
+    })
+
+    let newTodoList = [...todoList];
+    newTodoList[todoPos].isEditing = isEditing
+    updateAllTodos(newTodoList);
+  }
+
+  function updateTodoName(todoID, todoName){
+    let todoPos = '';
+    todoList.map((todo, i) => {
+      if (todo.todoid === todoID) {
+        todoPos = i;
+      }
+    })
+
+    let newTodoList = [...todoList];
+    newTodoList[todoPos].todoName = todoName
+    updateAllTodos(newTodoList);
+  }
+
+  function addTodo(todoName) {
+    let newTodoList = [...todoList, {insearch: +false, completed: +false, isEditing: false, todoid: Date.now(), todoName: todoName}];
+    updateAllTodos(newTodoList)
+  }
+
+  function deleteTodo(todoID) {
+    let todoPos = '';
+    todoList.map((todo, i) => {
+      if (todo.todoid === todoID) {
         todoPos = i;
       }
     })
 
     let newTodoList = [...todoList];
     newTodoList.splice(todoPos, 1)
-    setTodoList(newTodoList);
+    updateAllTodos(newTodoList);
   }
+
+  function editTodo(todoID) {
+    console.log('editTodo ' + todoID)
+  }
+
+  useEffect(() => {
+    if (todoList !== '') {
+      localStorage.setItem('localTodos', JSON.stringify(todoList))
+    }
+  }, [todoList] )
 
   return (
     <div className='flex flex-col'>
       <h1 className='mb-4'>Just To Do It!</h1>
       <SearchInput searchTodoList={searchTodoList}/>
-      <ListItems triggerDeleteTodo={triggerDeleteTodo} todoList={todoList} updateTodo={updateTodo} triggerAddTodo={triggerAddTodo}/>
+      {/* <TypeSort /> */}
+      <ListItems deleteTodo={deleteTodo} todoList={todoList} todoCompleteState={todoCompleteState} todoEditState={todoEditState} updateTodoName={updateTodoName} addTodo={addTodo} editTodo={editTodo}/>
+      {/* <TypeSortKey /> */}
     </div>
   )
 }
