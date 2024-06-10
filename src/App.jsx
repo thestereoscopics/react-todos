@@ -25,48 +25,26 @@ export default function App() {
     updateAllTodos(newTodoList);
   }
 
-  function todoCompleteState(todoID, isComplete){
-    let todoPos = '';
-    todoList.map((todo, i) => {
-      if (todo.todoid === todoID) {
-        todoPos = i;
-      }
-    })
-
-    let newTodoList = [...todoList];
-    newTodoList[todoPos].completed = +isComplete
-    updateAllTodos(newTodoList);
-  }
-
-  function todoEditState(todoID, isEditing){
-    let todoPos = '';
-    todoList.map((todo, i) => {
-      if (todo.todoid === todoID) {
-        todoPos = i;
-      }
-    })
-
-    let newTodoList = [...todoList];
-    newTodoList[todoPos].isEditing = isEditing
-    updateAllTodos(newTodoList);
-  }
-
-  function updateTodoName(todoID, todoName){
-    let todoPos = '';
-    todoList.map((todo, i) => {
-      if (todo.todoid === todoID) {
-        todoPos = i;
-      }
-    })
-
-    let newTodoList = [...todoList];
-    newTodoList[todoPos].todoName = todoName
-    updateAllTodos(newTodoList);
-  }
-
   function addTodo(todoName) {
     let newTodoList = [...todoList, {insearch: +false, completed: +false, isEditing: false, todoid: Date.now(), todoName: todoName}];
     updateAllTodos(newTodoList)
+  }
+
+  function updateTodoValue(todoID, keyName, todoValue){
+    let todoPos = '';
+    todoList.map((todo, i) => {
+      if (todo.todoid === todoID) {
+        todoPos = i;
+      }
+    })
+
+    let newTodoList = [...todoList];
+    if (keyName === 'completed') {
+      newTodoList[todoPos][keyName] = +todoValue
+    } else {
+      newTodoList[todoPos][keyName] = todoValue
+    }
+    updateAllTodos(newTodoList);
   }
 
   function deleteTodo(todoID) {
@@ -97,7 +75,7 @@ export default function App() {
       <h1 className='mb-4'>Just To Do It!</h1>
       <SearchInput searchTodoList={searchTodoList}/>
       {/* <TypeSort /> */}
-      <ListItems deleteTodo={deleteTodo} todoList={todoList} todoCompleteState={todoCompleteState} todoEditState={todoEditState} updateTodoName={updateTodoName} addTodo={addTodo} editTodo={editTodo}/>
+      <ListItems deleteTodo={deleteTodo} todoList={todoList} updateTodoValue={updateTodoValue} addTodo={addTodo} editTodo={editTodo}/>
       {/* <TypeSortKey /> */}
     </div>
   )

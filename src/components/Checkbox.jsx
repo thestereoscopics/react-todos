@@ -1,17 +1,17 @@
 import { useState } from "react"
 
-export default function Checkbox({todoID, todoName, todoCompleteState, status, updateTodoName, todoEditState, isEditing}) {
+export default function Checkbox({todoID, todoName, updateTodoValue, status, isEditing}) {
     const [isChecked, setIsChecked] = useState(status)
     const [todoValue, setTodoValue] = useState(todoName)
     
     function handleChange(e) {
         setIsChecked(!isChecked)
-        todoCompleteState(todoID, !isChecked)
+        updateTodoValue(todoID, 'completed', !isChecked)
     }
 
     function handleBlur() {
-        updateTodoName(todoID, todoValue)
-        todoEditState(todoID, false)
+        updateTodoValue(todoID, 'todoName', todoValue)
+        updateTodoValue(todoID, 'isEditing', false)
     }
 
     function checkKeyDown(e) {

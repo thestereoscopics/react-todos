@@ -1,7 +1,7 @@
-export default function EditTodo({todoID, todoEditState}) {
+export default function EditTodo({todoID, updateTodoValue}) {
 
     function handleClick() {
-        todoEditState(todoID, true)
+        updateTodoValue(todoID, 'isEditing', true)
     }
 
     return (

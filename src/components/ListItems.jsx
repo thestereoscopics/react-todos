@@ -4,7 +4,7 @@ import DeleteTodo from "./DeleteTodo";
 import Checkbox from "./Checkbox";
 import EditTodo from "./EditTodo";
 
-export default function ListItems({todoList, addTodo, deleteTodo, todoCompleteState, todoEditState, updateTodoName}) {
+export default function ListItems({todoList, addTodo, deleteTodo, updateTodoValue}) {
   const [todoListHTML, setTodoListHTML] = useState([]);
 
   function populateTodoList() {
@@ -13,10 +13,10 @@ export default function ListItems({todoList, addTodo, deleteTodo, todoCompleteSt
       tempTodoListHTML.push(
         <li className={"flex items-center max-w-full gap-4 " + (listItem.insearch === 1 ? 'insearch' : '')} key={listItem.todoid} status={(listItem.completed === 1) ? 'complete' : 'unfinished'} todoid={listItem.todoid}>
           <span className={"w-auto flex-auto items-center left flex gap-4 " + (listItem.completed === 1 ? 'line-through' : 'unfinished') } >
-            <Checkbox todoID={listItem.todoid} isEditing={listItem.isEditing} todoName={listItem.todoName} status={listItem.completed} todoCompleteState={todoCompleteState} updateTodoName={updateTodoName} todoEditState={todoEditState} />
+            <Checkbox todoID={listItem.todoid} isEditing={listItem.isEditing} todoName={listItem.todoName} status={listItem.completed} updateTodoValue={updateTodoValue} />
           </span>
           <span className="flex flex-auto gap-4 justify-end">
-            <EditTodo todoID={listItem.todoid} todoEditState={todoEditState}/>
+            <EditTodo todoID={listItem.todoid} updateTodoValue={updateTodoValue}/>
             <DeleteTodo todoID={listItem.todoid} deleteTodo={deleteTodo}/>
           </span>
         </li>
